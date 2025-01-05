@@ -16,7 +16,7 @@ export default function Hero() {
                 </h1>
 
                 <p className='hero__subtitle'>
-                    Streamline your car rental experience with our effortless booking process. Whether you're planning a road trip, need a ride to the airport, or just want to get behind the wheel of a car you've always dreamed of driving, we can help.
+                    Streamline your car rental experience with our effortless booking process.
                 </p>
 
                 <CustomButton
