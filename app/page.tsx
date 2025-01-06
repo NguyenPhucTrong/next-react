@@ -51,10 +51,10 @@ export default function Home() {
         ) : (
           <div className="home__error-container">
             <h2 className="text-black text-xl font-bold">
-              Oops, no results found 
+              Oops, no results found
             </h2>
             <p>
-              {allCars?.message}
+              No cars available at the moment.
             </p>
           </div>
         )}
