@@ -60,7 +60,10 @@ export default function Home({ searchParams }: HomeProps) {
                 <CarCard key={index} car={car} />
               ))}
             </div>
-            {/* <ShowMore /> */}
+            <ShowMore
+              pageNumber={(parseInt(params.get('limit') || '10', 10)) / 10}
+              isNext={(parseInt(params.get('limit') || '10', 10)) > allCars.length}
+            />
           </section>
         ) : (
           <div className="home__error-container">

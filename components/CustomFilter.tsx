@@ -4,7 +4,8 @@ import { Fragment, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from "@headlessui/react";
-import { CustomFilterProps, updateSearchParamsProps } from "@/styles";
+import { CustomFilterProps } from "@/styles";
+import { updateSearchParamsProps } from "@/utils";
 
 
 export default function CustomFilter({ title, options }: CustomFilterProps) {
