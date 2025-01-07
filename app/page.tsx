@@ -4,14 +4,22 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { CustomFilter, Hero, Searchbar, CarCard } from "@/components";
 import { fetchCars } from "@/utils";
+import { HomeProps } from "@/styles";
 
-export default function Home() {
+export default function Home({ searchParams }: HomeProps) {
   const [allCars, setAllCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getCars() {
-      const cars = await fetchCars();
+      const cars = await fetchCars({
+        manufacturer: searchParams.manufacturer || "",
+        year: searchParams.year || 2022,
+        fuel: searchParams.fuel || "",
+        limit: searchParams.limit || 10,
+        model: searchParams.model || "",
+      }
+      );
       setAllCars(cars);
       setIsLoading(false);
     }
