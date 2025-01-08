@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { SearchManufacturer } from './';
 import Image from 'next/image';
 import React, { useState } from 'react'
+import { SearchBarProps } from '@/styles';
 
 const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
     <button type='submit' className={`-ml-3 z-10 ${otherClasses}`} >
@@ -17,9 +18,12 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
     </button>
 )
 
-export default function Searchbar() {
-    const [manufacturer, setManufacturer] = useState("");
-    const [model, setModel] = useState("");
+export default function Searchbar({ setManufacturer, setModel }: SearchBarProps) {
+    const [searchManufacturer, setSearchManufacturer] = useState("");
+    const [searchModel, setSearchModel] = useState("");
+
+    // const [manufacturer, setManufacturer] = useState("");
+    // const [model, setModel] = useState("");
 
     const router = useRouter();
     console.log("Router context:", router);
@@ -27,45 +31,46 @@ export default function Searchbar() {
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(manufacturer, model);
+        console.log(searchManufacturer, searchModel);
 
-        if (manufacturer === "" || model === "") {
+        if (searchManufacturer === "" || searchModel === "") {
             return alert("Please fill in the Searchbar");
 
         }
-        updateSearchParams(model.toLowerCase(), manufacturer.toLowerCase());
+        setModel(searchModel);
+        setManufacturer(searchManufacturer);
     }
 
-    const updateSearchParams = (model: string, manufacturer: string) => {
-        // Create a new URLSearchParams object using the current URL search parameters
-        const searchParams = new URLSearchParams(window.location.search);
+    // const updateSearchParams = (searchModel: string, searchManufacturer: string) => {
+    //     // Create a new URLSearchParams object using the current URL search parameters
+    //     const searchParams = new URLSearchParams(window.location.search);
 
-        // Update or delete the 'model' search parameter based on the 'model' value
-        if (model) {
-            searchParams.set("model", model);
-        } else {
-            searchParams.delete("model");
-        }
+    //     // Update or delete the 'model' search parameter based on the 'searchModel' value
+    //     if (searchModel) {
+    //         searchParams.set("searchModel", searchModel);
+    //     } else {
+    //         searchParams.delete("searchModel");
+    //     }
 
-        // Update or delete the 'manufacturer' search parameter based on the 'manufacturer' value
-        if (manufacturer) {
-            searchParams.set("manufacturer", manufacturer);
-        } else {
-            searchParams.delete("manufacturer");
-        }
+    //     // Update or delete the 'manufacturer' search parameter based on the 'manufacturer' value
+    //     if (searchManufacturer) {
+    //         searchParams.set("searchManufacturer", searchManufacturer);
+    //     } else {
+    //         searchParams.delete("searchManufacturer");
+    //     }
 
-        // Generate the new pathname with the updated search parameters
-        const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+    //     // Generate the new pathname with the updated search parameters
+    //     const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
 
-        router.push(newPathname);
-    };
+    //     router.push(newPathname);
+    // };
 
     return (
         <form className='searchbar' onSubmit={handleSearch}>
             <div className='searchbar__item'>
                 <SearchManufacturer
-                    manufacturer={manufacturer}
-                    setManufacturer={setManufacturer}
+                    selected={searchManufacturer}
+                    setSelected={setSearchManufacturer}
                 />
                 <div className='searchbar__item'>
                     <Image
@@ -78,8 +83,8 @@ export default function Searchbar() {
                     <input
                         type='text'
                         name='model'
-                        value={model}
-                        onChange={(e) => setModel(e.target.value)}
+                        value={searchModel}
+                        onChange={(e) => setSearchModel(e.target.value)}
                         placeholder='Tiguan...'
                         className='searchbar__input'
                     />

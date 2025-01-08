@@ -2,15 +2,14 @@
 
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions, Transition } from "@headlessui/react";
 import { useState, Fragment } from "react";
-import { SearchManufacturerProps } from "@/styles";
 import Image from "next/image";
 
 import { manufacturers } from "@/constants";
+import { SearchManuFacturerProps } from "@/styles";
 
 export default function SearchManufacturer({
-    manufacturer,
-    setManufacturer,
-}: SearchManufacturerProps) {
+    selected, setSelected
+}: SearchManuFacturerProps) {
     const [query, setQuery] = useState<string>("");
 
     const filteredManufacturers =
@@ -22,7 +21,7 @@ export default function SearchManufacturer({
 
     return (
         <div className='search-manufacturer'>
-            <Combobox value={manufacturer} onChange={setManufacturer}>
+            <Combobox value={selected} onChange={setSelected}>
                 <div className='relative w-full'>
                     {/* Button for the combobox. Click on the icon to see the complete dropdown */}
                     <ComboboxButton className='absolute top-[14px]'>
