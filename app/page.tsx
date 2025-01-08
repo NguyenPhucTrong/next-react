@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { CustomFilter, Hero, Searchbar, CarCard } from "@/components";
 import { fuels, yearsOfProduction } from "@/constants";
-import { useSearchParams } from "next/navigation";
 import { fetchCars } from "@/utils";
 import ShowMore from "@/components/ShowMore";
 
@@ -19,7 +18,6 @@ export default function Home() {
   const [year, setYear] = useState(2022);
   const [limit, setLimit] = useState(10);
 
-  const params = useSearchParams();
 
   const getCars2 = async () => {
     setIsLoading(true);
