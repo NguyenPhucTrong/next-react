@@ -21,42 +21,59 @@ import { FilterProps } from "@/styles";
 
 export async function fetchCars(filters: FilterProps) {
   const { manufacturer, year, model, limit, fuel } = filters;
+
   const headers = {
     'x-rapidapi-key': '78f132c206msh9fa52d5f36e7bf0p18018bjsn98bc96f134d2',
     'x-rapidapi-host': 'cars-by-api-ninjas.p.rapidapi.com',
   };
 
-  // Build query string only with valid parameters
-  const queryParams = new URLSearchParams();
+  const buildQueryParams = (useLimit = true) => {
+    const queryParams = new URLSearchParams();
 
-  if (manufacturer) queryParams.append('make', manufacturer);
-  if (year) queryParams.append('year', year.toString());
-  if (model) queryParams.append('model', model);
-  if (limit) queryParams.append('limit', limit.toString());
-  if (fuel) queryParams.append('fuel_type', fuel);
+    if (manufacturer) queryParams.append('make', manufacturer);
+    if (year) queryParams.append('year', year.toString());
+    if (model) queryParams.append('model', model);
+    if (useLimit && limit) queryParams.append('limit', limit.toString());
+    if (fuel) queryParams.append('fuel_type', fuel);
 
-  const url = `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?${queryParams.toString()}`;
+    return queryParams.toString();
+  };
 
-  console.log('Fetching cars with URL:', url);
+  const fetchFromApi = async (useLimit = true) => {
+    const url = `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?${buildQueryParams(useLimit)}`;
+    console.log('Fetching cars with URL:', url);
 
-  try {
     const response = await fetch(url, { headers });
 
-    // Check HTTP status
     if (!response.ok) {
-      console.error('API Error:', response.statusText);
-      return [];
+      // console.error('API Error:', response.statusText);
+      throw new Error('API request failed');
     }
 
     const result = await response.json();
-    console.log('Fetched cars:', result);
-
     return result;
+  };
+
+  try {
+    // Try fetching with the limit parameter
+    const cars = await fetchFromApi(true);
+    console.log('Fetched cars:', cars);
+    return cars;
   } catch (error) {
-    console.error('Error fetching cars:', error);
-    return [];
+    console.warn('Primary API failed, falling back to no-limit request:', error);
+
+    try {
+      // Fallback: Fetch without the limit parameter
+      const fallbackCars = await fetchFromApi(false);
+      console.log('Fetched cars from fallback:', fallbackCars);
+      return fallbackCars;
+    } catch (fallbackError) {
+      console.error('Fallback API also failed:', fallbackError);
+      return [];
+    }
   }
 }
+
 
 
 
